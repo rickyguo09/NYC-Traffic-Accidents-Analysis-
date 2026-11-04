@@ -43,12 +43,13 @@ WHERE "CRASH DATE" IS NOT NULL
 GROUP BY Month
 ORDER BY Month;
 ```
-
+<img width="312" height="240" alt="image" src="https://github.com/user-attachments/assets/b6595a18-3cce-4ced-8422-c5dc08ee1fcf" />
+1. Macro-Level Trends: Monthly Accident VolumeThe dataset (spanning January to August) demonstrates a distinct curve in accident frequency across the year:Early Year Peak: Accidents were highest at the start of the year. Month 01 (January) recorded the most accidents at 14,287, making up 19.08% of the total. Month 02 (February) closely followed with 13,684 accidents, or 18.27% of the total.   The Spring Drop: There is a drastic reduction in accidents in Month 04 (April), plummeting to just 4,116 incidents, or 5.5% of the total. This steep drop is consistent with the massive reduction in traffic volume caused by the onset of the COVID-19 pandemic lockdowns in New York City during the spring of 2020.   Summer Rebound: As the year progressed, accident volumes steadily climbed back up. By Month 07 (July), incidents reached 9,225 (12.32%) before slightly dipping to 8,747 (11.68%) in Month 08 (August).
 ### 1. Monthly Percentage Analysis
 This query calculates the proportion of total accidents that occurred in each month to identify seasonal trends. 
 * **Dynamic Subqueries:** Instead of hardcoding the total number of rows as a denominator, a subquery `(SELECT COUNT(*) FROM NYC_Accidents)` is used to calculate the total dynamically. This ensures the query remains accurate and scalable even if new data is appended to the database later.
 * **Formatting:** The `ROUND()` function is applied to keep the output clean and readable at two decimal places for reporting purposes.
-
+1. Macro-Level Trends: Monthly Accident VolumeThe dataset (spanning January to August) demonstrates a distinct curve in accident frequency across the year:Early Year Peak: Accidents were highest at the start of the year. Month 01 (January) recorded the most accidents at 14,287, making up 19.08% of the total. Month 02 (February) closely followed with 13,684 accidents, or 18.27% of the total.   The Spring Drop: There is a drastic reduction in accidents in Month 04 (April), plummeting to just 4,116 incidents, or 5.5% of the total. This steep drop is consistent with the massive reduction in traffic volume caused by the onset of the COVID-19 pandemic lockdowns in New York City during the spring of 2020.   Summer Rebound: As the year progressed, accident volumes steadily climbed back up. By Month 07 (July), incidents reached 9,225 (12.32%) before slightly dipping to 8,747 (11.68%) in Month 08 (August).  
 ```sql
 SELECT 
     CASE cast(strftime('%w', "CRASH DATE") AS integer)
@@ -67,6 +68,25 @@ WHERE "CRASH DATE" IS NOT NULL AND "CRASH TIME" IS NOT NULL
 GROUP BY Day_Of_Week, Hour_Of_Day
 ORDER BY Total_Accidents DESC;
 ```
+<img width="331" height="885" alt="image" src="https://github.com/user-attachments/assets/b87f53ac-ad11-41fe-b4c3-4f5a5eb796b5" />
+2. Micro-Level Trends: Day of Week and Hour
+Analyzing the daily and hourly data reveals clear patterns tied to commuting behavior:
+
+The Most Dangerous Times: The late afternoon and early evening hours on weekdays are the highest-risk windows. The top five most frequent times for accidents are all concentrated in this timeframe:
+
+Friday at 16:00 (4:00 PM) – 870 accidents
+
+Friday at 14:00 (2:00 PM) – 815 accidents
+
+Thursday at 16:00 (4:00 PM) – 814 accidents
+
+Friday at 17:00 (5:00 PM) – 804 accidents
+
+Friday at 18:00 (6:00 PM) – 800 accidents
+
+Day of the Week Volumes: Friday is the most dangerous day of the week overall (12,271 total accidents), followed by Thursday (11,244). Sunday is the safest day to drive, recording the lowest total volume (9,003).
+
+The Safest Times: The early morning hours between 2:00 AM and 4:00 AM see the fewest accidents. For example, Tuesday at 4:00 AM and Thursday at 3:00 AM both recorded just 78 accidents.
 ### 2. Peak Danger Times (Day & Hour)
 This query identifies the specific times when accidents are most likely to occur by breaking down the timestamp into granular components.
 * **Data Transformation:** SQLite's `strftime('%w')` extracts the day of the week as an integer (0-6). A `CASE` statement is utilized to transform these integers into readable string text (Sunday - Saturday), ensuring the output is immediately ready for stakeholder presentations.
