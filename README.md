@@ -5,6 +5,7 @@
 This project analyzes over 74,000 New York City traffic accident records to uncover spatial and temporal trends in collision frequency and severity. The goal of this analysis is to identify peak accident times, evaluate borough-specific trends, and clean a raw, real-world dataset for structured querying.
 
 ## Dataset
+* **Source:** [Kaggle - Global Traffic Accidents Dataset](https://www.kaggle.com/datasets/adilshamim8/global-traffic-accidents-dataset)
 * **Timeframe:** January 2020 – August 2020
 * **Volume:** 74,881 records
 * **Key Features:** Crash Date/Time, Borough, Coordinates, Injury/Fatality Counts, and Contributing Factors.
