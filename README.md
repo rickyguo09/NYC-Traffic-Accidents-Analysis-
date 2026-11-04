@@ -31,4 +31,41 @@ Before analyzing the data, several cleaning steps were required to ensure accura
 * **Monthly Distribution:** January recorded the highest volume of accidents (19.1% of the total dataset), closely followed by February (18.3%), indicating a higher collision frequency during winter months.
 
 ## SQL Queries
-*Please see the attached `.sql` files in this repository for the complete code used to extract these insights.*
+
+### 1. Percentage of Total Accidents by Month
+```sql
+SELECT 
+    strftime('%m', "CRASH DATE") AS Month,
+    COUNT(*) AS Accident_Count,
+    ROUND((COUNT(*) * 100.0) / (SELECT COUNT(*) FROM NYC_Accidents), 2) AS Percentage_of_Total
+FROM NYC_Accidents
+WHERE "CRASH DATE" IS NOT NULL
+GROUP BY Month
+ORDER BY Month;
+
+### 1. Monthly Percentage Analysis
+This query calculates the proportion of total accidents that occurred in each month to identify seasonal trends. 
+* **Dynamic Subqueries:** Instead of hardcoding the total number of rows as a denominator, a subquery `(SELECT COUNT(*) FROM NYC_Accidents)` is used to calculate the total dynamically. This ensures the query remains accurate and scalable even if new data is appended to the database later.
+* **Formatting:** The `ROUND()` function is applied to keep the output clean and readable at two decimal places for reporting purposes.
+
+SELECT 
+    CASE cast(strftime('%w', "CRASH DATE") AS integer)
+        WHEN 0 THEN 'Sunday'
+        WHEN 1 THEN 'Monday'
+        WHEN 2 THEN 'Tuesday'
+        WHEN 3 THEN 'Wednesday'
+        WHEN 4 THEN 'Thursday'
+        WHEN 5 THEN 'Friday'
+        WHEN 6 THEN 'Saturday'
+    END AS Day_Of_Week,
+    strftime('%H', "CRASH TIME") AS Hour_Of_Day,
+    COUNT(*) AS Total_Accidents
+FROM NYC_Accidents
+WHERE "CRASH DATE" IS NOT NULL AND "CRASH TIME" IS NOT NULL
+GROUP BY Day_Of_Week, Hour_Of_Day
+ORDER BY Total_Accidents DESC;
+
+### 2. Peak Danger Times (Day & Hour)
+This query identifies the specific times when accidents are most likely to occur by breaking down the timestamp into granular components.
+* **Data Transformation:** SQLite's `strftime('%w')` extracts the day of the week as an integer (0-6). A `CASE` statement is utilized to transform these integers into readable string text (Sunday - Saturday), ensuring the output is immediately ready for stakeholder presentations.
+* **Multi-Level Aggregation:** The dataset is aggregated by both the day of the week and the hour of the day using `GROUP BY`, then sorted in descending order using `ORDER BY` to instantly surface the highest-risk windows at the top of the result set.
