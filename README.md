@@ -42,12 +42,14 @@ FROM NYC_Accidents
 WHERE "CRASH DATE" IS NOT NULL
 GROUP BY Month
 ORDER BY Month;
+```
 
 ### 1. Monthly Percentage Analysis
 This query calculates the proportion of total accidents that occurred in each month to identify seasonal trends. 
 * **Dynamic Subqueries:** Instead of hardcoding the total number of rows as a denominator, a subquery `(SELECT COUNT(*) FROM NYC_Accidents)` is used to calculate the total dynamically. This ensures the query remains accurate and scalable even if new data is appended to the database later.
 * **Formatting:** The `ROUND()` function is applied to keep the output clean and readable at two decimal places for reporting purposes.
 
+```sql
 SELECT 
     CASE cast(strftime('%w', "CRASH DATE") AS integer)
         WHEN 0 THEN 'Sunday'
@@ -69,3 +71,4 @@ ORDER BY Total_Accidents DESC;
 This query identifies the specific times when accidents are most likely to occur by breaking down the timestamp into granular components.
 * **Data Transformation:** SQLite's `strftime('%w')` extracts the day of the week as an integer (0-6). A `CASE` statement is utilized to transform these integers into readable string text (Sunday - Saturday), ensuring the output is immediately ready for stakeholder presentations.
 * **Multi-Level Aggregation:** The dataset is aggregated by both the day of the week and the hour of the day using `GROUP BY`, then sorted in descending order using `ORDER BY` to instantly surface the highest-risk windows at the top of the result set.
+```
