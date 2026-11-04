@@ -66,9 +66,8 @@ FROM NYC_Accidents
 WHERE "CRASH DATE" IS NOT NULL AND "CRASH TIME" IS NOT NULL
 GROUP BY Day_Of_Week, Hour_Of_Day
 ORDER BY Total_Accidents DESC;
-
+```
 ### 2. Peak Danger Times (Day & Hour)
 This query identifies the specific times when accidents are most likely to occur by breaking down the timestamp into granular components.
 * **Data Transformation:** SQLite's `strftime('%w')` extracts the day of the week as an integer (0-6). A `CASE` statement is utilized to transform these integers into readable string text (Sunday - Saturday), ensuring the output is immediately ready for stakeholder presentations.
 * **Multi-Level Aggregation:** The dataset is aggregated by both the day of the week and the hour of the day using `GROUP BY`, then sorted in descending order using `ORDER BY` to instantly surface the highest-risk windows at the top of the result set.
-```
