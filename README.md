@@ -1,4 +1,3 @@
-# NYC-Traffic-Accidents-Analysis-
 # NYC Traffic Accidents Data Analysis
 
 ## Project Overview
